@@ -68,7 +68,10 @@ function App() {
                     <ul>
                       {Object.entries(properties).map(([key, value], index) => (
                         <li key={index}>
-                          <strong>{key}:</strong> {value}
+                          <strong>{key}:</strong>{" "}
+                          {typeof value === "boolean"
+                            ? value.toString()
+                            : value}
                         </li>
                       ))}
                     </ul>
