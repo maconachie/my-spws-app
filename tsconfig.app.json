@@ -5,7 +5,12 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+      "paths": {
+        "@spws": [
+          "../spws/lib"  // Adjust this to point to the `src` directory in your local `spws` project
+        ],
+        "@spws/*": ["../spws/index"]
+      },
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

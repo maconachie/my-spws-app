@@ -1,73 +1,85 @@
 import { useState, useEffect } from "react";
-import { getWebPartProperties } from "spws/src";
-import WebPartUpdater from "./components/WebPartUpdater";
 import "./App.css";
+import {
+  getListCollection,
+  getWebPartProperties,
+  List,
+  WebPartProperties,
+} from "@objectpoint/spws";
+
+import CollapsibleSection from "./components/CollapsibleSection";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [webParts, setWebParts] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const pageURL = "/sites/spws/operations/StaticPages/getWebPart.aspx";
-  const webURL = "http://objectpoint/sites/spws/operations";
-  // Fetch list collection on component mount
-  useEffect(() => {
-    const fetchWebParts = async () => {
-      try {
-        const res = await getWebPartProperties({
-          pageURL,
-          webURL,
-        });
+  const [getLists, setLists] = useState<List[]>([]);
+  const [getProperties, setProperties] = useState<WebPartProperties[]>([]);
 
-        setWebParts(res.data); // Assuming response contains the data in 'res.data'
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch WebParts");
+  useEffect(() => {
+    const fetchLists = async () => {
+      try {
+        const lists = await getListCollection({
+          webURL: "http://objectpoint/sites/spws/",
+        });
+        setLists(lists.data);
+      } catch (error) {
+        console.error("Error fetching list collection:", error);
       }
     };
 
+    const fetchWebParts = async () => {
+      try {
+        const lists = await getWebPartProperties({
+          pageURL:
+            "http://objectpoint/sites/spws/operations/StaticPages/getWebPart.aspx",
+          webURL: "http://objectpoint/sites/spws/operations/",
+        });
+        setProperties(lists.data);
+      } catch (error) {
+        console.error("Error fetching webparts:", error);
+      }
+    };
+
+    fetchLists();
     fetchWebParts();
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   return (
-    <>
-      <h1>Test SPWS</h1>
-
-      {/* Display fetched lists or errors */}
-      <div className="card">
-        {error ? (
-          <p>Error: {error}</p>
-        ) : webParts.length > 0 ? (
+    <div className="App">
+      <header className="App-header">
+        <p>testing spws in a React TS project</p>
+        <CollapsibleSection title="Get List Collection">
           <ul>
-            {webParts.map((webPart, index) => (
+            {getLists.map((list, index) => (
+              <li key={index}>{list.Title}</li>
+            ))}
+          </ul>
+        </CollapsibleSection>
+        <CollapsibleSection title="Get Properties">
+          <ul>
+            {getProperties.map((properties, index) => (
               <li key={index}>
-                <table>
-                  <tr>
-                    <td>{webPart.ID}</td>
-                    <td>{webPart.webPartXml}</td>
-                    <WebPartUpdater
-                      pageURL={pageURL}
-                      webURL={webURL}
-                      webPart={webPart}
-                      storageKey={webPart.ID}
-                    />
-                  </tr>
-                </table>
+                {properties.ID}
+                <span>
+                  <CollapsibleSection title="WebPartXML">
+                    <ul>
+                      <li key={index}>{properties.webPartXml}</li>
+                    </ul>
+                  </CollapsibleSection>{" "}
+                  <CollapsibleSection title="WebPartProperties">
+                    <ul>
+                      {Object.entries(properties).map(([key, value], index) => (
+                        <li key={index}>
+                          <strong>{key}:</strong> {value}
+                        </li>
+                      ))}
+                    </ul>
+                  </CollapsibleSection>
+                </span>
               </li>
             ))}
           </ul>
-        ) : (
-          <p>Loading webPart collection...</p>
-        )}
-
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs"></p>
-    </>
+        </CollapsibleSection>
+      </header>
+    </div>
   );
 }
 

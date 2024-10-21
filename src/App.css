@@ -1,24 +1,25 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.App {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* App header styling */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-@keyframes logo-spin {
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
@@ -27,16 +28,58 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* --- Collapsible Section Styling --- */
+
+/* Styling for collapsible button */
+button {
+  background-color: #61dafb;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px 0;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.card {
-  padding: 2em;
+/* Button hover effect */
+button:hover {
+  background-color: #21a1f1;
+  transform: scale(1.05);
 }
 
-.read-the-docs {
-  color: #888;
+/* Collapsible content section */
+.content {
+  padding: 15px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+/* When the section is open, animate to show the content */
+.content-open {
+  max-height: none; /* Adjust based on content size */
+  opacity: 1;
+}
+
+/* Styling the list inside the collapsible section */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  color: steelblue;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+li:not(:last-child) {
+  border-bottom: 1px solid #ddd;
 }

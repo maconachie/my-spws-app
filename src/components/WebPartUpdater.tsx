@@ -1,6 +1,6 @@
 import React from "react";
-import { defaults, saveWebPart } from "spws/src";
-import { WebPartProperties } from "spws/src/types";
+import { defaults, saveWebPart } from "@objectpoint/spws";
+import { WebPartProperties } from "@objectpoint/spws";
 
 type WebPartUpdaterProps = {
   pageURL: string;
