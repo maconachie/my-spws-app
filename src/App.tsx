@@ -1,23 +1,21 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import {
-  getListCollection,
-  getWebPartProperties,
-  List,
-  WebPartProperties,
-} from "@objectpoint/spws";
-
+import { getListCollection, getWebPartProperties } from "@objectpoint/spws";
+import { List, WebPartProperties } from "@objectpoint/spws/lib/types";
 import CollapsibleSection from "./components/CollapsibleSection";
+import WebPartPropertiesEditor from "./components/WebPartPropertiesEditor";
 
 function App() {
   const [getLists, setLists] = useState<List[]>([]);
   const [getProperties, setProperties] = useState<WebPartProperties[]>([]);
+  const pageURL =
+    "http://objectpoint/sites/spws/operations/StaticPages/getWebPart.aspx";
 
   useEffect(() => {
     const fetchLists = async () => {
       try {
         const lists = await getListCollection({
-          webURL: "http://objectpoint/sites/spws/",
+          webURL: "http://objectpoint/sites/spws/operations",
         });
         setLists(lists.data);
       } catch (error) {
@@ -27,12 +25,11 @@ function App() {
 
     const fetchWebParts = async () => {
       try {
-        const lists = await getWebPartProperties({
-          pageURL:
-            "http://objectpoint/sites/spws/operations/StaticPages/getWebPart.aspx",
-          webURL: "http://objectpoint/sites/spws/operations/",
+        const webParts = await getWebPartProperties({
+          pageURL,
+          webURL: "http://objectpoint/sites/spws/operations",
         });
-        setProperties(lists.data);
+        setProperties(webParts.data);
       } catch (error) {
         console.error("Error fetching webparts:", error);
       }
@@ -65,16 +62,10 @@ function App() {
                     </ul>
                   </CollapsibleSection>{" "}
                   <CollapsibleSection title="WebPartProperties">
-                    <ul>
-                      {Object.entries(properties).map(([key, value], index) => (
-                        <li key={index}>
-                          <strong>{key}:</strong>{" "}
-                          {typeof value === "boolean"
-                            ? value.toString()
-                            : value}
-                        </li>
-                      ))}
-                    </ul>
+                    <WebPartPropertiesEditor
+                      properties={properties}
+                      pageURL={pageURL}
+                    ></WebPartPropertiesEditor>
                   </CollapsibleSection>
                 </span>
               </li>

@@ -83,3 +83,61 @@ li {
 li:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
+/* Table styling */
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Table header styling */
+th {
+  background-color: #61dafb;
+  color: white;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table row styling */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Table cell styling */
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+td:first-of-type {
+  width: 25%;
+}
+/* Hover effect for table rows */
+tr:hover {
+  background-color: #f1f1f1;
+}
+/* Center the table within the content section */
+.content table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Styling for inputs and textareas inside the content table */
+.content table input,
+.content table textarea {
+  width: 600px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+/* Focus effect for inputs and textareas */
+.content table input:focus,
+.content table textarea:focus {
+  border-color: #61dafb;
+  outline: none;
+}
